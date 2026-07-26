@@ -1,0 +1,218 @@
+@extends('admin.layout.master')
+
+@section('admin-title')
+    @lang('general.Arya Gostaran Management Panel') / @lang('general.users_list')
+@endsection
+
+@section('admin-content')
+    <main class="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-900">
+        <!-- header page -->
+        <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">@lang('general.users_management')</h2>
+                <p class="text-gray-600 dark:text-gray-400">@lang('general.users_list')</p>
+            </div>
+            <div class="mt-4 md:mt-0">
+                <a href="{{ route('admin.users.create') }}"
+                    class="flex items-center px-4 py-2 text-sm font-medium rounded-lg bg-primary-600 text-white hover:bg-primary-500 shadow-sm dark:bg-primary-500 dark:hover:bg-primary-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 me-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    @lang('general.new_user')
+                </a>
+            </div>
+        </div>
+        @include('admin.pages.filter', ['filters' => $filters, 'back' => route('admin.users.index')])
+        <!-- Users list -->
+        <div
+            class="bg-white py-6 space-y-4 dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div
+                class="px-6 pb-2 border-b border-gray-200 flex-wrap dark:border-gray-700 flex items-center justify-between">
+                <h3
+                    class="font-bold text-lg mb-4 relative pb-4 before:absolute before:start-0 before:bottom-0 before:size-2 before:rounded-full before:bg-primary after:absolute after:w-40 after:h-2 after:bottom-0 after:start-4 after:bg-primary after:rounded-lg">
+                    @lang('general.users_list_title')
+                </h3>
+            </div>
+            <!-- Users table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-start">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th
+                                class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                @lang('general.user_id')</th>
+                            <th
+                                class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                @lang('general.user_name')</th>
+                            <th
+                                class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                @lang('general.email')</th>
+                            <th
+                                class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                @lang('general.role')</th>
+                            <th
+                                class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                @lang('general.status')</th>
+                            <th
+                                class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                @lang('general.operations')</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                        <!-- Users -->
+                        @foreach ($users as $key => $user)
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                                    {{ $user->id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="ms-4">
+                                            <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                                {{ $user->name }}</div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ $user->phone }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                    {{ $user->email }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @if ($user->role === 'student')
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                           دانشجو
+                                        </span>
+                                    @elseif ($user->role === 'teacher')
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                                            استاد
+                                        </span>
+                                    @else
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                            ---
+                                        </span>
+                                    @endif
+                                </td>
+
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @if ($user->is_active)
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                            @lang('general.active')
+                                        </span>
+                                    @else
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                            @lang('general.disabled')
+                                        </span>
+                                    @endif
+                                </td>
+
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex items-center gap-4">
+                                        {{-- Edit --}}
+                                        <a href="{{ route('admin.users.edit', $user) }}"
+                                            class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                            </svg>
+                                        </a>
+
+                                        {{-- Delete --}}
+                                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST"
+                                            onsubmit="return confirm('آیا مطمئن هستید؟')">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit"
+                                                class="text-secondary-600 hover:text-secondary-900 dark:text-secondary-50 dark:hover:text-secondary-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="bg-white dark:bg-gray-800 px-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+
+                    {{-- Info --}}
+                    <div>
+                        <p class="text-sm text-gray-700 dark:text-gray-300">
+                            @lang('general.showing')
+                            <span class="font-medium">{{ $users->firstItem() }}</span>
+                            @lang('general.to')
+                            <span class="font-medium">{{ $users->lastItem() }}</span>
+                            @lang('general.from')
+                            <span class="font-medium">{{ $users->total() }}</span>
+                            @lang('general.User')
+                        </p>
+                    </div>
+
+                    {{-- Pagination buttons --}}
+                    <div class="flex flex-wrap items-center gap-2">
+
+                        {{-- Previous --}}
+                        @if ($users->onFirstPage())
+                            <span
+                                class="px-3 py-1 border rounded-lg text-sm text-gray-400 border-gray-300 dark:border-gray-600">
+                                @lang('general.previous')
+                            </span>
+                        @else
+                            <a href="{{ $users->previousPageUrl() }}"
+                                class="px-3 py-1 border rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600">
+                                @lang('general.previous')
+                            </a>
+                        @endif
+
+                        {{-- Pages --}}
+                        @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+                            @if ($page == $users->currentPage())
+                                <span
+                                    class="px-3 py-1 border rounded-lg text-sm font-medium text-white bg-primary-600 dark:bg-primary-500 border-primary-600 dark:border-primary-500">
+                                    {{ $page }}
+                                </span>
+                            @else
+                                <a href="{{ $url }}"
+                                    class="px-3 py-1 border rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600">
+                                    {{ $page }}
+                                </a>
+                            @endif
+                        @endforeach
+
+                        {{-- Next --}}
+                        @if ($users->hasMorePages())
+                            <a href="{{ $users->nextPageUrl() }}"
+                                class="px-3 py-1 border rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600">
+                                @lang('general.next')
+                            </a>
+                        @else
+                            <span
+                                class="px-3 py-1 border rounded-lg text-sm text-gray-400 border-gray-300 dark:border-gray-600">
+                                @lang('general.next')
+                            </span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+@endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/js/dependencies/app.js') }}"></script>
+@endpush
