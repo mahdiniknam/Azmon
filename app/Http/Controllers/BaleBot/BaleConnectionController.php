@@ -21,7 +21,7 @@ class BaleConnectionController extends Controller
         $link = BaleAccountLink::create([
             'user_id' => $user->id,
             'code' => (string) random_int(100000, 999999),
-            'expires_at' => now()->addMinutes(10),
+            'expires_at' => now()->addMinutes(1000),
         ]);
 
         return back()->with('bale_connect_code', $link->code);

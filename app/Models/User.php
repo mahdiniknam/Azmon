@@ -28,7 +28,11 @@ class User extends Authenticatable
         'role',
         'phone',
         'is_active',
+        'email_verified_at',
+        'bale_chat_id',
+        'bale_linked_at',
     ];
+
 
     /**
      * Hidden attributes
