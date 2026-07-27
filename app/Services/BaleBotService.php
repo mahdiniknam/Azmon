@@ -141,35 +141,47 @@ class BaleBotService
     {
         $attempt->loadMissing(['exam', 'user']);
 
-        // اگر واقعاً می‌خواهی فقط بعد از publish ارسال شود، این شرط را نگه دار
-        // if (! $attempt->exam->resultsArePublished()) {
-        //     return;
-        // }
-
         $chatId ??= $attempt->user?->bale_chat_id;
 
+        Log::info('Preparing Bale attempt report', [
+            'attempt_id' => $attempt->id,
+            'chat_id' => $chatId,
+            'exam_title' => $attempt->exam?->title,
+            'score' => $attempt->score,
+        ]);
+
         if (! $chatId) {
+            Log::warning('Bale report skipped: no chat id', [
+                'attempt_id' => $attempt->id,
+                'user_id' => $attempt->user?->id,
+            ]);
             return;
         }
 
         $score = number_format((float) $attempt->score, 2, '.', '');
-        $maxScore = number_format((float) $attempt->max_score, 2, '.', '');
-        $percentage = number_format((float) $attempt->percentage, 2, '.', '');
+        $maxScore = number_format((float) ($attempt->max_score ?? 0), 2, '.', '');
+        $percentage = number_format((float) ($attempt->percentage ?? 0), 2, '.', '');
 
         $text = sprintf(
             "📘 نتیجه آزمون: %s\n👤 دانش‌آموز: %s\n🏆 نمره: %s از %s\n📊 درصد: %s%%\n✅ صحیح: %d\n❌ غلط: %d\n➖ بی‌پاسخ: %d%s",
-            $attempt->exam->title,
-            $attempt->user->name ?? $attempt->user->email,
+            $attempt->exam->title ?? '—',
+            $attempt->user->name ?? $attempt->user->email ?? '—',
             $score,
             $maxScore,
             $percentage,
-            $attempt->correct_count,
-            $attempt->wrong_count,
-            $attempt->unanswered_count,
+            (int) ($attempt->correct_count ?? 0),
+            (int) ($attempt->wrong_count ?? 0),
+            (int) ($attempt->unanswered_count ?? 0),
             $attempt->invalidated_at ? "\n🚫 مردود به دلیل تقلب: {$attempt->invalidated_reason}" : ''
         );
 
-        $this->sendMessage($chatId, $text, [
+        Log::info('Sending Bale message', [
+            'attempt_id' => $attempt->id,
+            'chat_id' => $chatId,
+            'text' => $text,
+        ]);
+
+        $this->sendMessage($text, $chatId , [
             [
                 [
                     'text' => 'مشاهده نتیجه آزمون 🌐',
@@ -178,6 +190,7 @@ class BaleBotService
             ],
         ]);
     }
+
 
 
     public function sendTeacherSummary(Exam $exam): void

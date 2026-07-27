@@ -10,7 +10,7 @@ use App\Services\AntiCheatService;
 use App\Services\ExamAttemptService;
 use App\Services\ResultCalculator;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 
 class StudentExamController extends Controller
 {
@@ -176,6 +176,11 @@ class StudentExamController extends Controller
         $attempt->refresh();
 
         SendBaleExamResultJob::dispatch($attempt->id);
+
+        Log::info('Finishing exam attempt', [
+            'attempt_id' => $attempt->id,
+            'user_id' => auth()->id(),
+        ]);
 
         return redirect()->route('student.attempts.result', $attempt)
             ->with('success', 'آزمون با موفقیت ثبت شد.');

@@ -18,12 +18,14 @@ class ExamAttempt extends Model
         'ip_address',
         'user_agent',
         'status',
+        'bale_report_sent_at',
     ];
 
     protected $casts = [
         'started_at' => 'datetime',
         'finished_at' => 'datetime',
         'score' => 'float',
+        'bale_report_sent_at' => 'datetime',
     ];
 
     public function exam()
