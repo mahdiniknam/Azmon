@@ -58,9 +58,24 @@ class TeacherReportController extends Controller
             ]);
 
             if ($attempt->user?->bale_chat_id) {
+                $resultUrl = route('student.attempts.result', $attempt);
+
+                $text = "🚫 نتیجه آزمون شما توسط استاد به دلیل تقلب ابطال شد.\n"
+                    . "📘 آزمون: {$attempt->exam->title}\n"
+                    . "📝 دلیل: {$attempt->invalidated_reason}\n"
+                    . "برای مشاهده جزئیات روی دکمه زیر بزنید.";
+
                 app(\App\Services\BaleBotService::class)->sendMessage(
-                    "🚫 نتیجه آزمون شما توسط استاد به دلیل تقلب ابطال شد.\n📝 دلیل: {$attempt->invalidated_reason}",
-                    $attempt->user->bale_chat_id
+                    $text,
+                    $attempt->user->bale_chat_id,
+                    [
+                        [
+                            [
+                                'text' => 'مشاهده نتیجه آزمون',
+                                'url' => $resultUrl,
+                            ],
+                        ],
+                    ]
                 );
             }
         });
