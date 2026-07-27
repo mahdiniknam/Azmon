@@ -16,7 +16,7 @@ class SettingBotController extends Controller
                 ->where('expires_at', '>', now())
                 ->latest()
                 ->first(),
-            'baleBotUsername' => 'ble.ir/Azmonsaz_bot',
+            'baleBotUsername' => 'https://ble.ir/Azmonsaz_bot',
         ]);
     }
 }

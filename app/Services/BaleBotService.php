@@ -10,25 +10,95 @@ use Illuminate\Support\Facades\Log;
 
 class BaleBotService
 {
-    public function sendMessage(string $text, ?string $chatId): void
-    {
+    public function sendMessage(
+        string $text,
+        ?string $chatId,
+        array $inlineKeyboard = [],
+        array $extra = []
+    ): void {
         if (! $this->isEnabled()) {
+            Log::info('Bale disabled, message skipped.');
             return;
         }
 
         $token = $this->setting('bale.bot_token', config('services.bale.bot_token'));
+
         if (! $token || ! $chatId) {
+            Log::warning('Bale message skipped due to missing token/chat_id.', [
+                'has_token' => (bool) $token,
+                'chat_id' => $chatId,
+            ]);
             return;
         }
 
-        try {
-            Http::timeout(10)->post("https://tapi.bale.ai/bot{$token}/sendMessage", [
-                'chat_id' => $chatId,
-                'text' => $text,
-            ])->throw();
-        } catch (\Throwable $exception) {
-            Log::warning('Bale message failed.', ['exception' => $exception::class]);
+        $payload = array_merge([
+            'chat_id' => $chatId,
+            'text' => $text,
+        ], $extra);
+
+        if (! empty($inlineKeyboard)) {
+            $payload['reply_markup'] = [
+                'inline_keyboard' => $inlineKeyboard,
+            ];
         }
+
+        try {
+            $response = Http::asJson()
+                ->timeout(15)
+                ->post("https://tapi.bale.ai/bot{$token}/sendMessage", $payload);
+
+            if (! $response->successful()) {
+                Log::warning('Bale sendMessage failed.', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                    'payload' => $payload,
+                ]);
+                return;
+            }
+
+            Log::info('Bale message sent successfully.', [
+                'chat_id' => $chatId,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::warning('Bale message exception.', [
+                'message' => $exception->getMessage(),
+                'class' => $exception::class,
+            ]);
+        }
+    }
+
+    public function sendSuccessMessage(?string $chatId, string $text): void
+    {
+        $this->sendMessage($text, $chatId, [
+            [
+                [
+                    'text' => 'ورود به سایت 🌐',
+                    'url' => config('app.url'),
+                ],
+            ],
+        ]);
+    }
+
+    public function sendHelpMessage(?string $chatId): void
+    {
+        $this->sendMessage(
+            "سلام 👋\n\nبرای اتصال حساب، کد ۶ رقمی‌ای که داخل سایت گرفته‌ای را برای من بفرست.",
+            $chatId,
+            [
+                [
+                    [
+                        'text' => 'ورود به سایت 🌐',
+                        'url' => config('app.url'),
+                    ],
+                ],
+                [
+                    [
+                        'text' => 'راهنما',
+                        'callback_data' => 'help',
+                    ],
+                ],
+            ]
+        );
     }
 
     public function sendAttemptReport(ExamAttempt $attempt, ?string $chatId = null): void
@@ -45,7 +115,7 @@ class BaleBotService
         }
 
         $text = sprintf(
-            "نتیجه آزمون: %s\nدانش‌آموز: %s\nنمره: %s از %s\nدرصد: %s%%\nصحیح: %d | غلط: %d | بی‌پاسخ: %d%s",
+            "📘 نتیجه آزمون: %s\n👤 دانش‌آموز: %s\n🏆 نمره: %s از %s\n📊 درصد: %s%%\n✅ صحیح: %d\n❌ غلط: %d\n➖ بی‌پاسخ: %d%s",
             $attempt->exam->title,
             $attempt->user->name ?? $attempt->user->email,
             $attempt->score,
@@ -54,15 +124,23 @@ class BaleBotService
             $attempt->correct_count,
             $attempt->wrong_count,
             $attempt->unanswered_count,
-            $attempt->invalidated_at ? "\nمردود به دلیل تقلب: {$attempt->invalidated_reason}" : '',
+            $attempt->invalidated_at ? "\n🚫 مردود به دلیل تقلب: {$attempt->invalidated_reason}" : '',
         );
 
-        $this->sendMessage($text, $chatId);
+        $this->sendMessage($text, $chatId, [
+            [
+                [
+                    'text' => 'پنل دانش‌آموز 🌐',
+                    'url' => config('app.url'),
+                ],
+            ],
+        ]);
     }
 
     public function sendTeacherSummary(Exam $exam): void
     {
         $exam->loadMissing('creator');
+
         $chatId = $exam->creator?->bale_chat_id;
         if (! $chatId || ! $exam->resultsArePublished()) {
             return;
@@ -72,18 +150,27 @@ class BaleBotService
         $count = (clone $attempts)->count();
         $average = $count > 0 ? round((float) (clone $attempts)->avg('percentage'), 2) : 0;
 
-        $this->sendMessage(sprintf(
-            "خلاصه آزمون: %s\nتعداد تلاش‌های نهایی: %d\nمیانگین درصد: %s%%\nجزئیات کامل در پنل استاد قابل مشاهده است.",
+        $text = sprintf(
+            "📚 خلاصه آزمون: %s\n👥 تعداد تلاش‌های نهایی: %d\n📈 میانگین درصد: %s%%\n\nجزئیات کامل در پنل استاد قابل مشاهده است.",
             $exam->title,
             $count,
             $average,
-        ), $chatId);
+        );
+
+        $this->sendMessage($text, $chatId, [
+            [
+                [
+                    'text' => 'پنل استاد 🌐',
+                    'url' => config('app.url'),
+                ],
+            ],
+        ]);
     }
 
     public function sendAdminAlert(string $text): void
     {
         $this->sendMessage(
-            $text,
+            "🚨 هشدار سیستم\n\n{$text}",
             $this->setting('bale.report_chat_id', config('services.bale.report_chat_id')),
         );
     }
@@ -101,7 +188,6 @@ class BaleBotService
         try {
             return Setting::getValue($key, $fallback);
         } catch (\Throwable $exception) {
-            // During installation the settings table may not exist yet.
             return $fallback;
         }
     }

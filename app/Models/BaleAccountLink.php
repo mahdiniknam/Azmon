@@ -28,6 +28,8 @@ class BaleAccountLink extends Model
 
     public function isUsable(): bool
     {
-        return is_null($this->used_at) && $this->expires_at?->isFuture();
+        return is_null($this->used_at)
+            && ! is_null($this->expires_at)
+            && $this->expires_at->isFuture();
     }
 }

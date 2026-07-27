@@ -34,5 +34,11 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'bale' => [
+        'bot_token' => env('BALE_BOT_TOKEN'),
+        'report_chat_id' => env('BALE_REPORT_CHAT_ID'),
+        'enabled' => env('BALE_ENABLED', true),
+    ],
+
 
 ];
