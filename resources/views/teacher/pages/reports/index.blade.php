@@ -18,6 +18,7 @@
                             <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">نوع</th>
                             <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">تعداد شرکت‌کنندگان</th>
                             <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">عملیات</th>
+                             <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">وضعیت</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
@@ -50,10 +51,21 @@
                                     <a href="{{ route('teacher.reports.exam-detail', $exam->id) }}"
                                         class="text-blue-600 hover:text-blue-900">مشاهده نتایج</a>
                                 </td>
+                                <td>
+                                    @if ($exam->invalidated_at)
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700">
+                                            مردود به دلیل تقلب
+                                        </span>
+                                    @elseif($exam->end_time < now())
+                                        پایان یافته
+                                    @else
+                                        در حال انجام
+                                    @endif
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-6 py-4 text-center">موردی یافت نشد.</td>
+                                <td colspan="5" class="px-6 py-4 text-center">موردی یافت نشد.</td>
                             </tr>
                         @endforelse
                     </tbody>

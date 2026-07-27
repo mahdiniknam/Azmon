@@ -150,19 +150,7 @@ class StudentExamController extends Controller
         return response()->json(['ok' => true, 'data' => $data]);
     }
 
-    // public function finish(ExamAttempt $attempt, ResultCalculator $calculator)
-    // {
-    //     $user = auth()->user();
-
-    //     if ($attempt->user_id != $user->id) {
-    //         abort(403);
-    //     }
-
-    //     $calculator->finish($attempt);
-    //     SendBaleExamResultJob::dispatch($attempt->id);
-    //     return redirect()->route('student.attempts.result', $attempt)
-    //         ->with('success', 'آزمون با موفقیت ثبت شد.');
-    // }
+    
 
     public function finish(ExamAttempt $attempt, ResultCalculator $calculator)
     {
@@ -221,6 +209,9 @@ class StudentExamController extends Controller
 
         $resultPublished = true;
         $subjectBreakdown = [];
+
+       
+
 
         return view('student.pages.exams.result', compact(
             'attempt',

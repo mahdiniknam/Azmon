@@ -19,6 +19,9 @@ class ExamAttempt extends Model
         'user_agent',
         'status',
         'bale_report_sent_at',
+        'invalidated_at',
+        'invalidated_reason',
+        'invalidated_by',
     ];
 
     protected $casts = [
@@ -26,6 +29,7 @@ class ExamAttempt extends Model
         'finished_at' => 'datetime',
         'score' => 'float',
         'bale_report_sent_at' => 'datetime',
+        'invalidated_at' => 'datetime',
     ];
 
     public function exam()
@@ -61,5 +65,9 @@ class ExamAttempt extends Model
         }
 
         return true;
+    }
+    public function invalidatedByUser()
+    {
+        return $this->belongsTo(User::class, 'invalidated_by');
     }
 }

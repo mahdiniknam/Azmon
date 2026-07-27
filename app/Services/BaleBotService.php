@@ -155,12 +155,12 @@ class BaleBotService
         $percentage = number_format((float) $percentageValue, 1, '.', '');
 
         $text = sprintf(
-            "📘 نتیجه آزمون: %s\n👤 دانش‌آموز: %s\n🏆 نمره: %s از %s\n📊 درصد: %s%%\n✅ صحیح: %d\n❌ غلط: %d\n➖ بی‌پاسخ: %d%s",
+            "📘 نتیجه آزمون: %s\n👤 دانش‌آموز: %s\n🏆 نمره: %s%%\n✅ صحیح: %d\n❌ غلط: %d\n➖ بی‌پاسخ: %d%s",
             $exam?->title ?? '—',
             $attempt->user->name ?? $attempt->user->email ?? '—',
             $score,
             $maxScoreFormatted,
-            $percentage,
+
             $correct,
             $wrong,
             $unanswered,

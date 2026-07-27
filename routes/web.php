@@ -336,6 +336,8 @@ Route::prefix('teacher')->name('teacher.')->group(function (): void {
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/', [\App\Http\Controllers\Teacher\TeacherReportController::class, 'index'])->name('index');
             Route::get('exam/{id}', [\App\Http\Controllers\Teacher\TeacherReportController::class, 'examDetail'])->name('exam-detail');
+            Route::post('exam-attempt/{attempt}/invalidate', [\App\Http\Controllers\Teacher\TeacherReportController::class, 'invalidateAttempt'])
+                ->name('invalidate-attempt');
         });
     });
 });

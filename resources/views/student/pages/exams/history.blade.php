@@ -20,7 +20,7 @@
                             <th class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">عنوان آزمون</th>
                             <th class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">تاریخ شرکت</th>
                             <th class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">نمره</th>
-                            <th class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">درصد</th>
+                            {{-- <th class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">درصد</th> --}}
                             <th class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">وضعیت</th>
                             <th class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">عملیات</th>
                         </tr>
@@ -32,7 +32,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap font-medium">{{ $attempt->exam->title ?? '---' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm" dir="ltr">{{ $attempt->created_at ? jdate($attempt->created_at)->format('Y/m/d H:i') : '---' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-primary">{{ $attempt->score ?? '---' }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 dark:text-blue-400 font-bold" dir="ltr">{{ $attempt->percentage ?? 0 }}%</td>
+                                {{-- <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 dark:text-blue-400 font-bold" dir="ltr">{{ $attempt->percentage ?? 0 }}%</td> --}}
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($attempt->status == 'finished')
                                         <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">پایان یافته</span>
