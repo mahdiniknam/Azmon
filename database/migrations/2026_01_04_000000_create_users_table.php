@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('phone', 30)->nullable();
             $table->boolean('is_active')->default(true)->index();
             $table->rememberToken();
-            $table->string('bale_chat_id')->nullable()->after('remember_token');
-            $table->timestamp('bale_linked_at')->nullable()->after('bale_chat_id');
+            $table->string('bale_chat_id')->nullable();
+            $table->timestamp('bale_linked_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
