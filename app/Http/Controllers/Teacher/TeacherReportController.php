@@ -14,7 +14,7 @@ class TeacherReportController extends Controller
     {
         $exams = Exam::where('teacher_id', auth()->id())->withCount('attempts')->latest()->paginate(10);
 
-        return view('teacher.pages`.reports.index', compact('exams'));
+        return view('teacher.pages.reports.index', compact('exams'));
     }
 
     public function examDetail($id)
