@@ -341,14 +341,16 @@ class SettingController extends Controller
 
     public function baleUpdate(Request $request)
     {
+        
         $request->validate([
-            'bot_token' => 'nullable|string',
-            'report_chat_id' => 'nullable|string',
+            'bale_bot_token' => 'nullable|string',
+            'bale_admin_chat_id' => 'nullable|string',
+            'bale_bot_enabled' => 'nullable|string',
         ]);
 
-        \App\Models\Setting::setValue('bale.bot_token', $request->bot_token);
-        \App\Models\Setting::setValue('bale.report_chat_id', $request->report_chat_id);
-        \App\Models\Setting::setValue('bale.enabled', $request->has('enabled') ? '1' : '0');
+        \App\Models\Setting::setValue('bale.bot_token', $request->bale_bot_token);
+        \App\Models\Setting::setValue('bale.report_chat_id', $request->bale_admin_chat_id);
+        \App\Models\Setting::setValue('bale.enabled', $request->bale_bot_enabled);
 
         return redirect()->back()->with('success', 'تنظیمات ربات بله با موفقیت ذخیره شد.');
     }

@@ -19,11 +19,11 @@
                     پیکربندی ربات
                 </h3>
             </div>
-            
+
             <div class="p-6">
-                <form action="#" method="POST" class="space-y-6 max-w-2xl">
+                <form action="{{route('admin.setting.bale.update')}}" method="POST" class="space-y-6 max-w-2xl">
                     @csrf
-                    
+
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">توکن ربات (Bot Token)</label>
@@ -36,7 +36,7 @@
                             <input type="text" name="bale_admin_chat_id" value="{{ old('bale_admin_chat_id', $settings['bale_admin_chat_id'] ?? '') }}" class="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg p-2.5 focus:ring-primary focus:border-primary" placeholder="مثال: 123456789">
                             <p class="text-xs text-gray-500 mt-1">شناسه عددی کاربری شما در بله برای دریافت گزارشات ادمین.</p>
                         </div>
-                        
+
                         <div class="flex items-center pt-4">
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" name="bale_bot_enabled" value="1" class="sr-only peer" {{ ($settings['bale_bot_enabled'] ?? false) ? 'checked' : '' }}>

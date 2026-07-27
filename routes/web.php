@@ -229,7 +229,7 @@ Route::middleware(SetLocal::class)->group(function () {
             // تنظیمات ربات بله
             Route::prefix('setting/bale')->name('setting.bale.')->group(function () {
                 Route::get('/', [SettingController::class, 'baleEdit'])->name('edit');
-                Route::put('/', [SettingController::class, 'baleUpdate'])->name('update');
+                Route::post('/', [SettingController::class, 'baleUpdate'])->name('update');
             });
         });
     });
