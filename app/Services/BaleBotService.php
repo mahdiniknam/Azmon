@@ -101,41 +101,84 @@ class BaleBotService
         );
     }
 
+    // public function sendAttemptReport(ExamAttempt $attempt, ?string $chatId = null): void
+    // {
+    //     $attempt->loadMissing(['exam', 'user']);
+
+    //     if (! $attempt->exam->resultsArePublished()) {
+    //         return;
+    //     }
+
+    //     $chatId ??= $attempt->user?->bale_chat_id;
+    //     if (! $chatId) {
+    //         return;
+    //     }
+
+    //     $text = sprintf(
+    //         "📘 نتیجه آزمون: %s\n👤 دانش‌آموز: %s\n🏆 نمره: %s از %s\n📊 درصد: %s%%\n✅ صحیح: %d\n❌ غلط: %d\n➖ بی‌پاسخ: %d%s",
+    //         $attempt->exam->title,
+    //         $attempt->user->name ?? $attempt->user->email,
+    //         $attempt->score,
+    //         $attempt->max_score,
+    //         $attempt->percentage,
+    //         $attempt->correct_count,
+    //         $attempt->wrong_count,
+    //         $attempt->unanswered_count,
+    //         $attempt->invalidated_at ? "\n🚫 مردود به دلیل تقلب: {$attempt->invalidated_reason}" : '',
+    //     );
+
+    //     $this->sendMessage($text, $chatId, [
+    //         [
+    //             [
+    //                 'text' => 'پنل دانش‌آموز 🌐',
+    //                 'url' => config('app.url'),
+    //             ],
+    //         ],
+    //     ]);
+    // }
+
     public function sendAttemptReport(ExamAttempt $attempt, ?string $chatId = null): void
     {
         $attempt->loadMissing(['exam', 'user']);
 
-        if (! $attempt->exam->resultsArePublished()) {
-            return;
-        }
+        // اگر واقعاً می‌خواهی فقط بعد از publish ارسال شود، این شرط را نگه دار
+        // if (! $attempt->exam->resultsArePublished()) {
+        //     return;
+        // }
 
         $chatId ??= $attempt->user?->bale_chat_id;
+
         if (! $chatId) {
             return;
         }
+
+        $score = number_format((float) $attempt->score, 2, '.', '');
+        $maxScore = number_format((float) $attempt->max_score, 2, '.', '');
+        $percentage = number_format((float) $attempt->percentage, 2, '.', '');
 
         $text = sprintf(
             "📘 نتیجه آزمون: %s\n👤 دانش‌آموز: %s\n🏆 نمره: %s از %s\n📊 درصد: %s%%\n✅ صحیح: %d\n❌ غلط: %d\n➖ بی‌پاسخ: %d%s",
             $attempt->exam->title,
             $attempt->user->name ?? $attempt->user->email,
-            $attempt->score,
-            $attempt->max_score,
-            $attempt->percentage,
+            $score,
+            $maxScore,
+            $percentage,
             $attempt->correct_count,
             $attempt->wrong_count,
             $attempt->unanswered_count,
-            $attempt->invalidated_at ? "\n🚫 مردود به دلیل تقلب: {$attempt->invalidated_reason}" : '',
+            $attempt->invalidated_at ? "\n🚫 مردود به دلیل تقلب: {$attempt->invalidated_reason}" : ''
         );
 
-        $this->sendMessage($text, $chatId, [
+        $this->sendMessage($chatId, $text, [
             [
                 [
-                    'text' => 'پنل دانش‌آموز 🌐',
-                    'url' => config('app.url'),
+                    'text' => 'مشاهده نتیجه آزمون 🌐',
+                    'url' => route('student.attempts.result', $attempt),
                 ],
             ],
         ]);
     }
+
 
     public function sendTeacherSummary(Exam $exam): void
     {

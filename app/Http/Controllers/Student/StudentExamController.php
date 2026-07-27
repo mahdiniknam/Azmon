@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendBaleExamResultJob;
 use App\Models\Exam;
 use App\Models\ExamAttempt;
 use App\Services\AntiCheatService;
 use App\Services\ExamAttemptService;
 use App\Services\ResultCalculator;
 use Illuminate\Http\Request;
+use SendBaleExamResultJob as GlobalSendBaleExamResultJob;
 
 class StudentExamController extends Controller
 {
@@ -148,6 +150,20 @@ class StudentExamController extends Controller
         return response()->json(['ok' => true, 'data' => $data]);
     }
 
+    // public function finish(ExamAttempt $attempt, ResultCalculator $calculator)
+    // {
+    //     $user = auth()->user();
+
+    //     if ($attempt->user_id != $user->id) {
+    //         abort(403);
+    //     }
+
+    //     $calculator->finish($attempt);
+    //     SendBaleExamResultJob::dispatch($attempt->id);
+    //     return redirect()->route('student.attempts.result', $attempt)
+    //         ->with('success', 'آزمون با موفقیت ثبت شد.');
+    // }
+
     public function finish(ExamAttempt $attempt, ResultCalculator $calculator)
     {
         $user = auth()->user();
@@ -157,6 +173,9 @@ class StudentExamController extends Controller
         }
 
         $calculator->finish($attempt);
+        $attempt->refresh();
+
+        GlobalSendBaleExamResultJob::dispatch($attempt->id);
 
         return redirect()->route('student.attempts.result', $attempt)
             ->with('success', 'آزمون با موفقیت ثبت شد.');
