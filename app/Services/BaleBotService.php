@@ -101,41 +101,7 @@ class BaleBotService
         );
     }
 
-    // public function sendAttemptReport(ExamAttempt $attempt, ?string $chatId = null): void
-    // {
-    //     $attempt->loadMissing(['exam', 'user']);
 
-    //     if (! $attempt->exam->resultsArePublished()) {
-    //         return;
-    //     }
-
-    //     $chatId ??= $attempt->user?->bale_chat_id;
-    //     if (! $chatId) {
-    //         return;
-    //     }
-
-    //     $text = sprintf(
-    //         "📘 نتیجه آزمون: %s\n👤 دانش‌آموز: %s\n🏆 نمره: %s از %s\n📊 درصد: %s%%\n✅ صحیح: %d\n❌ غلط: %d\n➖ بی‌پاسخ: %d%s",
-    //         $attempt->exam->title,
-    //         $attempt->user->name ?? $attempt->user->email,
-    //         $attempt->score,
-    //         $attempt->max_score,
-    //         $attempt->percentage,
-    //         $attempt->correct_count,
-    //         $attempt->wrong_count,
-    //         $attempt->unanswered_count,
-    //         $attempt->invalidated_at ? "\n🚫 مردود به دلیل تقلب: {$attempt->invalidated_reason}" : '',
-    //     );
-
-    //     $this->sendMessage($text, $chatId, [
-    //         [
-    //             [
-    //                 'text' => 'پنل دانش‌آموز 🌐',
-    //                 'url' => config('app.url'),
-    //             ],
-    //         ],
-    //     ]);
-    // }
 
     public function sendAttemptReport(ExamAttempt $attempt, ?string $chatId = null): void
     {
@@ -158,23 +124,48 @@ class BaleBotService
             return;
         }
 
-        $score = number_format((float) $attempt->score, 2, '.', '');
-        $maxScore = number_format((float) ($attempt->max_score ?? 0), 2, '.', '');
-        $percentage = number_format((float) ($attempt->percentage ?? 0), 2, '.', '');
+        $exam = $attempt->exam;
+        $answers = $attempt->answers ?? collect();
+
+        $correct = $answers->where('is_correct', true)->count();
+        $wrong = $answers->where('is_correct', false)->count();
+        $answered = $correct + $wrong;
+
+        $totalQuestions = $exam?->questions?->count() ?? 0;
+
+        if ($totalQuestions === 0 && $exam) {
+            $subjectIds = $exam->subjects()->pluck('subjects.id');
+            $totalQuestions = \App\Models\Question::whereIn('subject_id', $subjectIds)->count();
+        }
+
+        $unanswered = max(0, $totalQuestions - $answered);
+
+        $maxScore = $exam?->questions?->sum('score') ?? 0;
+        if ($maxScore <= 0) {
+            $maxScore = max(1, $totalQuestions * 3);
+        }
+
+        $scoreValue = (float) ($attempt->score ?? 0);
+        $percentageValue = $maxScore > 0
+            ? round(($scoreValue / $maxScore) * 100, 1)
+            : 0;
+
+        $score = number_format($scoreValue, 2, '.', '');
+        $maxScoreFormatted = number_format((float) $maxScore, 2, '.', '');
+        $percentage = number_format((float) $percentageValue, 1, '.', '');
 
         $text = sprintf(
             "📘 نتیجه آزمون: %s\n👤 دانش‌آموز: %s\n🏆 نمره: %s از %s\n📊 درصد: %s%%\n✅ صحیح: %d\n❌ غلط: %d\n➖ بی‌پاسخ: %d%s",
-            $attempt->exam->title ?? '—',
+            $exam?->title ?? '—',
             $attempt->user->name ?? $attempt->user->email ?? '—',
             $score,
-            $maxScore,
+            $maxScoreFormatted,
             $percentage,
-            (int) ($attempt->correct_count ?? 0),
-            (int) ($attempt->wrong_count ?? 0),
-            (int) ($attempt->unanswered_count ?? 0),
+            $correct,
+            $wrong,
+            $unanswered,
             $attempt->invalidated_at ? "\n🚫 مردود به دلیل تقلب: {$attempt->invalidated_reason}" : ''
         );
-
         Log::info('Sending Bale message', [
             'attempt_id' => $attempt->id,
             'chat_id' => $chatId,
@@ -191,6 +182,90 @@ class BaleBotService
         ]);
     }
 
+    // public function sendAttemptReport(ExamAttempt $attempt, ?string $chatId = null): void
+    // {
+    //     $attempt->loadMissing([
+    //         'exam.questions',
+    //         'exam.subjects',
+    //         'user',
+    //         'answers',
+    //     ]);
+
+    //     $chatId ??= $attempt->user?->bale_chat_id;
+
+    //     Log::info('Preparing Bale attempt report', [
+    //         'attempt_id' => $attempt->id,
+    //         'chat_id' => $chatId,
+    //         'exam_title' => $attempt->exam?->title,
+    //         'score' => $attempt->score,
+    //     ]);
+
+    //     if (! $chatId) {
+    //         Log::warning('Bale report skipped: no chat id', [
+    //             'attempt_id' => $attempt->id,
+    //             'user_id' => $attempt->user?->id,
+    //         ]);
+    //         return ;
+    //     }
+
+    //     $exam = $attempt->exam;
+    //     $answers = $attempt->answers ?? collect();
+
+    //     $correct = $answers->where('is_correct', true)->count();
+    //     $wrong = $answers->where('is_correct', false)->count();
+    //     $answered = $correct + $wrong;
+
+    //     $totalQuestions = $exam?->questions?->count() ?? 0;
+
+    //     if ($totalQuestions === 0 && $exam) {
+    //         $subjectIds = $exam->subjects()->pluck('subjects.id');
+    //         $totalQuestions = \App\Models\Question::whereIn('subject_id', $subjectIds)->count();
+    //     }
+
+    //     $unanswered = max(0, $totalQuestions - $answered);
+
+    //     $maxScore = $exam?->questions?->sum('score') ?? 0;
+    //     if ($maxScore <= 0) {
+    //         $maxScore = max(1, $totalQuestions * 3);
+    //     }
+
+    //     $scoreValue = (float) ($attempt->score ?? 0);
+    //     $percentageValue = $maxScore > 0
+    //         ? round(($scoreValue / $maxScore) * 100, 1)
+    //         : 0;
+
+    //     $score = number_format($scoreValue, 2, '.', '');
+    //     $maxScoreFormatted = number_format((float) $maxScore, 2, '.', '');
+    //     $percentage = number_format((float) $percentageValue, 1, '.', '');
+
+    //     $text = sprintf(
+    //         "📘 نتیجه آزمون: %s\n👤 دانش‌آموز: %s\n🏆 نمره: %s از %s\n📊 درصد: %s%%\n✅ صحیح: %d\n❌ غلط: %d\n➖ بی‌پاسخ: %d%s",
+    //         $exam?->title ?? '—',
+    //         $attempt->user->name ?? $attempt->user->email ?? '—',
+    //         $score,
+    //         $maxScoreFormatted,
+    //         $percentage,
+    //         $correct,
+    //         $wrong,
+    //         $unanswered,
+    //         $attempt->invalidated_at ? "\n🚫 مردود به دلیل تقلب: {$attempt->invalidated_reason}" : ''
+    //     );
+
+    //     Log::info('Sending Bale message', [
+    //         'attempt_id' => $attempt->id,
+    //         'chat_id' => $chatId,
+    //         'text' => $text,
+    //     ]);
+
+    //     return $this->sendMessage($text, $chatId, [
+    //         [
+    //             [
+    //                 'text' => 'مشاهده نتیجه آزمون 🌐',
+    //                 'url' => route('student.attempts.result', $attempt),
+    //             ],
+    //         ],
+    //     ]);
+    // }
 
 
     public function sendTeacherSummary(Exam $exam): void
