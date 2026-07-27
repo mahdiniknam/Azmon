@@ -358,3 +358,6 @@ Route::middleware('auth:web')->prefix('payment')->name('payment.')->group(functi
         ->name('profile.bale.disconnect');
 });
 Route::post('/webhooks/bale', BaleWebhookController::class);
+// روت‌های مدیریتی وب‌هوک بله
+Route::get('/bale/setup/{password}', [BaleConnectionController::class, 'setupWebhook']);
+Route::get('/bale/status/{password}', [BaleConnectionController::class, 'getWebhookStatus']);
