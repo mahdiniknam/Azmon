@@ -17,7 +17,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // استثنا کردن وب‌هوک بله از بررسی توکن CSRF
+        $middleware->validateCsrfTokens(except: [
+            'webhooks/bale',
+        ]);
+
         $middleware->api(append: CheckIpBlocklist::class);
+
         $middleware->alias([
             'auth.admin' => AdminAuth::class,
             'setLogInfo' => SetLogInfoMiddleware::class,
@@ -26,5 +32,5 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // مدیریت استثناها و خطاها در اینجا قرار می‌گیرد
     })->create();

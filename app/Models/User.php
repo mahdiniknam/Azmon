@@ -123,4 +123,8 @@ class User extends Authenticatable
             ->where('status', 1)
             ->exists();
     }
+    public function baleLinks()
+    {
+        return $this->hasMany(BaleAccountLink::class);
+    }
 }

@@ -16,8 +16,11 @@ use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ExamController;
+use App\Http\Controllers\BaleBot\BaleConnectionController;
+use App\Http\Controllers\BaleBot\BaleWebhookController;
 use App\Http\Controllers\Student\StudentExamController;
 use App\Http\Controllers\Student\Auth\StudentAuthController;
+use App\Http\Controllers\Student\SettingBotController;
 use App\Http\Middleware\SetLocal;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -265,6 +268,15 @@ Route::prefix('student')->name('student.')->group(function (): void {
         Route::get('payments', [\App\Http\Controllers\Student\StudentPaymentController::class, 'index'])->name('payments.index');
         Route::get('payments/wallet', [\App\Http\Controllers\Student\StudentPaymentController::class, 'wallet'])->name('payments.wallet');
         Route::post('payments/wallet/charge', [\App\Http\Controllers\Student\StudentPaymentController::class, 'charge'])->name('payments.wallet.charge');
+
+        Route::get('show-seeting-bot',[SettingBotController::class,'show'])->name('show.setting.bot');
+
+        // ایجاد کد جدید
+        Route::post('/profile/bale/connect', [BaleConnectionController::class, 'create'])->name('profile.bale.connect');
+
+        // قطع اتصال
+        Route::delete('/profile/bale/disconnect', [BaleConnectionController::class, 'disconnect'])->name('profile.bale.disconnect');
+
     });
 });
 
@@ -338,4 +350,11 @@ Route::middleware('auth:web')->prefix('payment')->name('payment.')->group(functi
     Route::get('zarinpal/callback', [\App\Http\Controllers\Payment\PaymentController::class, 'zarinpalCallback'])->name('zarinpal.callback');
     Route::get('result/{transaction}', [\App\Http\Controllers\Payment\PaymentController::class, 'result'])->name('result');
     Route::post('calculate-share', [\App\Http\Controllers\Payment\PaymentController::class, 'calculateShare'])->name('calculate-share');
+
+    Route::post('/profile/bale/connect', [BaleConnectionController::class, 'create'])
+        ->name('profile.bale.connect');
+
+    Route::delete('/profile/bale/disconnect', [BaleConnectionController::class, 'disconnect'])
+        ->name('profile.bale.disconnect');
 });
+Route::post('/webhooks/bale', BaleWebhookController::class);
