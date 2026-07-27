@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Jobs;
+
 use App\Models\ExamAttempt;
 use App\Services\BaleBotService;
 use Illuminate\Contracts\Queue\ShouldQueue;
