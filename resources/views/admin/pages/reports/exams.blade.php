@@ -29,9 +29,24 @@
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $exam->id }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap font-medium">{{ $exam->title }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $exam->creator->name ?? 'ناشناس' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $exam->createdBy->name ?? 'سایت' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                    <span class="block text-gray-500">{{ $exam->type }}</span>
+                                    @if ($exam->is_public === 0)
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                            خصوصی
+                                        </span>
+                                    @elseif ($exam->is_public === 1)
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                                            عمومی
+                                        </span>
+                                    @else
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                            ---
+                                        </span>
+                                    @endif
                                     <span class="block font-medium text-green-600 mt-1">{{ $exam->price > 0 ? number_format($exam->price) . ' تومان' : 'رایگان' }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-lg font-bold text-primary">{{ $exam->students_count }}</td>

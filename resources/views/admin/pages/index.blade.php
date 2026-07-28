@@ -1,462 +1,203 @@
 @extends('admin.layout.master')
 
 @section('admin-title')
-@lang('general.Arya Gostaran Management Panel')
+    @lang('general.Arya Gostaran Management Panel')
 @endsection
 
 @section('admin-content')
-<main class="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-900">
-    <!-- header page -->
-    <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">@lang('general.Hi') {{ auth('admin')->user()->full_name }} <span class="text-2xl">👋</span></h2>
-            <p class="text-gray-600 dark:text-gray-400">@lang('general.The overall status of the system today')</p>
-        </div>
-        <div class="mt-4 md:mt-0">
-            <a href="{{ route('admin.users.create') }}" class="flex items-center px-4 py-2 text-sm font-medium rounded-lg bg-primary-600 text-white hover:bg-primary-500 shadow-sm dark:bg-primary-500 dark:hover:bg-primary-600">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 me-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                </svg>
-                @lang('general.New user')
-            </a>
-        </div>
-    </div>
-
-    <!-- Summary of cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 p-6 border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">@lang("general.Today's sale")</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white">42,850,000 <span class="text-sm">تومان</span></p>
-                </div>
-                <div class="p-3 rounded-xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                <span class="text-xs text-gray-500 dark:text-gray-400">@lang('general.A 12% increase over yesterday')</span>
-                <span class="text-xs px-2 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400">
-                    <i class="fas fa-arrow-up me-1"></i> 12%
-                </span>
-            </div>
+   <main class="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-900">
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">خلاصه گزارشات سیستم</h2>
+            <p class="text-gray-600 dark:text-gray-400">نمای کلی وضعیت مالی و آزمون‌ها</p>
         </div>
 
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 p-6 border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">@lang('general.New users')</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white">28 <span class="text-sm">@lang('general.User')</span></p>
-                </div>
-                <div class="p-3 rounded-xl bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                </div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                <span class="text-xs text-gray-500 dark:text-gray-400">@lang('general.15 active users today')</span>
-                <a href="#" class="text-xs text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300">@lang('general.See more')</a>
-            </div>
-        </div>
-
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 p-6 border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">@lang('general.Number of products')</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white">147 <span class="text-sm">محصول</span></p>
-                </div>
-                <div class="p-3 rounded-xl bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
-                </div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                <span class="text-xs text-gray-500 dark:text-gray-400">@lang('general.13 new products were added')</span>
-                <a href="#" class="text-xs text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300">@lang('general.See more')</a>
-            </div>
-        </div>
-
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 p-6 border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">@lang('general.New orders')</p>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white">38 <span class="text-sm">@lang('general.Order')</span></p>
-                </div>
-                <div class="p-3 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-1.5">
-                    <div class="bg-yellow-500 dark:bg-yellow-400 h-1.5 rounded-full" style="width: 85%"></div>
-                </div>
-                <div class="flex justify-between items-center mt-1">
-                    <span class="text-xs text-gray-500 dark:text-gray-400">@lang('general.Excellent level')</span>
-                    <span class="text-xs text-yellow-600 dark:text-yellow-400">@lang('general.85% delivered')</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Charts and orders -->
-    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
-        <!-- Activity chart -->
-        <div class="xl:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 p-6 border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="font-bold text-lg mb-4 relative pb-4 before:absolute before:start-0 before:bottom-0 before:size-2 before:rounded-full before:bg-primary after:absolute after:w-40 after:h-2 after:bottom-0 after:start-4 after:bg-primary after:rounded-lg">@lang('general.Monthly sales chart')</h3>
-            </div>
-            <div data-content="1" class="bg-white dark:bg-gray-800 p-6 rounded-lg">
-                <div class="relative h-80">
-                    <canvas id="salesChart"></canvas>
-                </div>
-                <div class="mt-4 text-sm text-gray-600 dark:text-gray-300">
-                    <p>@lang('general.Last update:') <span id="currentDate"></span></p>
-                </div>
-            </div>
-            <div data-content="2" class="bg-gray-50 border border-gray-200 hidden tab-content dark:bg-gray-800 p-6 rounded-lg">
-                <div class="relative h-80">
-                    <h3>@lang('general.There is no data to show')</h3>
-                </div>
-            </div>
-            <div data-content="3" class="bg-gray-50 border border-gray-200 hidden tab-content dark:bg-gray-800 p-6 rounded-lg">
-                <div class="relative h-80">
-                    <h3>@lang('general.There is no data to show')</h3>
-                </div>
-            </div>
-        </div>
-
-        <!-- Latest transactions -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 overflow-hidden border border-gray-200 dark:border-gray-700">
-            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                <h3 class="font-bold text-lg mb-4 relative pb-4 before:absolute before:start-0 before:bottom-0 before:size-2 before:rounded-full before:bg-primary after:absolute after:w-40 after:h-2 after:bottom-0 after:start-4 after:bg-primary after:rounded-lg">@lang('general.Last activities')</h3>
-            </div>
-            <div class="divide-y divide-gray-200 dark:divide-gray-700">
-                <div class="p-4 flex items-center hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                    <div class="p-3 rounded-xl bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 me-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 dark:text-gray-400 font-medium">مجموع درآمد</h3>
+                    <span class="bg-green-100 text-green-800 p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="text-sm font-medium text-gray-900 dark:text-white">@lang('general.Successful entry')</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">1402/05/20 - 12:45</p>
-                    </div>
-                    <div class="text-sm font-medium text-green-600 dark:text-green-400">{{ auth('admin')->user()->full_name }}</div>
+                    </span>
                 </div>
-                <div class="p-4 flex items-center hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                    <div class="p-3 rounded-xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 me-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="text-sm font-medium text-gray-900 dark:text-white">@lang('general.Product editing')</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">1402/05/18 - 09:23</p>
-                    </div>
-                    <div class="text-sm font-medium text-primary-600 dark:text-primary-400">@lang('general.Product #245')</div>
-                </div>
-                <div class="p-4 flex items-center hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                    <div class="p-3 rounded-xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 me-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="text-sm font-medium text-gray-900 dark:text-white">@lang('general.Remove the user')</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">1402/05/18 - 09:23</p>
-                    </div>
-                    <div class="text-sm font-medium text-red-600 dark:text-red-400">@lang('general.User #4587')</div>
-                </div>
-
-                <div class="p-4 flex items-center hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                    <div class="p-3 rounded-xl bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 me-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="text-sm font-medium text-gray-900 dark:text-white">@lang('general.New order')</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">1402/05/15 - 16:12</p>
-                    </div>
-                    <div class="text-sm font-medium text-green-600 dark:text-green-400">@lang('general.Order #7895')</div>
-                </div>
-                <div class="p-4 flex items-center hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                    <div class="p-3 rounded-xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 me-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="text-sm font-medium text-gray-900 dark:text-white">@lang('general.Updating Settings')</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">1402/05/10 - 14:30</p>
-                    </div>
-                    <div class="text-sm font-medium text-primary-600 dark:text-primary-400">@lang('general.System settings')</div>
-                </div>
-            </div>
-            <div class="p-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 text-center">
-                <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300">@lang('general.See more activities')</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Recent orders -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 overflow-hidden mb-6 border border-gray-200 dark:border-gray-700">
-        <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-            <h3 class="font-bold text-lg mb-4 relative pb-4 before:absolute before:start-0 before:bottom-0 before:size-2 before:rounded-full before:bg-primary after:absolute after:w-40 after:h-2 after:bottom-0 after:start-4 after:bg-primary after:rounded-lg">@lang('general.Recent orders')</h3>
-            <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 flex items-center">
-                @lang('general.See more')
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                </svg>
-            </a>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-700">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">@lang('general.The order number')</th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">@lang('general.History')</th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">@lang('general.Customer')</th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">@lang('general.The amount')</th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">@lang('general.Status')</th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">@lang('general.Operations')</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">#ORD-12345</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">1402/05/15</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">@lang('general.Ali Mohammadi')</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">@lang('general.1,250,000 USD')</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-3 py-1 inline-flex text-xs leading-5  rounded-full bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400">
-                                @lang('general.Delivered')
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                            <a href="#" class="text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 flex items-center">
-                                @lang('general.Detail')
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"></path>
-                                </svg>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">#ORD-12344</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">1402/05/10</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">@lang('general.Maryam Ahmadi')</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">@lang('general.850,000 USD')</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-3 py-1 inline-flex text-xs leading-5  rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-400">
-                                @lang('general.In sending')
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                            <a href="#" class="text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 flex items-center">
-                                @lang('general.Detail')
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"></path>
-                                </svg>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">#ORD-12343</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">1402/05/05</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">@lang('general.Reza Hosseini')</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">@lang('general.1,250,000 USD')</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-3 py-1 inline-flex text-xs leading-5  rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400">
-                                @lang('general.Waiting for payment')
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                            <a href="#" class="text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 flex items-center">
-                                @lang('general.Detail')
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"></path>
-                                </svg>
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Recent users -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 overflow-hidden border border-gray-200 dark:border-gray-700">
-        <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-            <h3 class="font-bold text-lg mb-4 relative pb-4 before:absolute before:start-0 before:bottom-0 before:size-2 before:rounded-full before:bg-primary after:absolute after:w-40 after:h-2 after:bottom-0 after:start-4 after:bg-primary after:rounded-lg">@lang('general.Recent users')</h3>
-            <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 flex items-center">
-                @lang('general.See more')
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                </svg>
-            </a>
-        </div>
-        <div class="divide-y divide-gray-200 dark:divide-gray-700">
-            <!-- User 1 -->
-            <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                <div class="flex items-start">
-                    <img class="h-10 w-10 rounded-full" src="assets/images/user/user.jpg" alt="پروفایل کاربر">
-                    <div class="ms-3">
-                        <div class="flex items-center">
-                            <p class="text-sm font-medium text-gray-900 dark:text-white">@lang('general.Ali Mohammadi')</p>
-                            <div class="flex items-center ms-3">
-                                <span class="text-xs text-gray-500 dark:text-gray-400">alimohammadi@example.com</span>
-                            </div>
-                        </div>
-                        <div class="mt-2 flex items-center text-xs text-gray-500 dark:text-gray-400">
-                            <span>@lang('general.Membership: 2 days ago')</span>
-                            <span class="mx-2">•</span>
-                            <span class="text-green-600 dark:text-green-400">@lang('general.Active')</span>
-                        </div>
-                    </div>
-                </div>
+                <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($totalIncome) }} <span class="text-sm font-normal text-gray-500">تومان</span></p>
             </div>
 
-            <!-- User 2 -->
-            <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                <div class="flex items-start">
-                    <img class="h-10 w-10 rounded-full" src="assets/images/user/user.jpg" alt="پروفایل کاربر">
-                    <div class="ms-3">
-                        <div class="flex items-center">
-                            <p class="text-sm font-medium text-gray-900 dark:text-white">@lang('general.Maryam Ahmadi')</p>
-                            <div class="flex items-center ms-3">
-                                <span class="text-xs text-gray-500 dark:text-gray-400">maryamahmadi@example.com</span>
-                            </div>
-                        </div>
-                        <div class="mt-2 flex items-center text-xs text-gray-500 dark:text-gray-400">
-                            <span>@lang('general.Membership: 5 days ago')</span>
-                            <span class="mx-2">•</span>
-                            <span class="text-yellow-600 dark:text-yellow-400">@lang('general.Awaiting approval')</span>
-                        </div>
-                    </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 dark:text-gray-400 font-medium">تعداد کل آزمون‌ها</h3>
+                    <span class="bg-blue-100 text-blue-800 p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                    </span>
+                </div>
+                <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($totalExams) }} <span class="text-sm font-normal text-gray-500">آزمون</span></p>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 dark:text-gray-400 font-medium">تراکنش‌های موفق</h3>
+                    <span class="bg-purple-100 text-purple-800 p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </span>
+                </div>
+                <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($successfulTransactions) }} <span class="text-sm font-normal text-gray-500">مورد</span></p>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 dark:text-gray-400 font-medium">تراکنش‌های ناموفق</h3>
+                    <span class="bg-red-100 text-red-800 p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </span>
+                </div>
+                <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format($failedTransactions) }} <span class="text-sm font-normal text-gray-500">مورد</span></p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
+                <h3 class="font-bold text-lg mb-4 border-b pb-2">دسترسی سریع</h3>
+                <div class="space-y-3 mt-4">
+                    <a href="{{ route('admin.reports.financial') }}" class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                        <span class="bg-primary-100 text-primary-700 p-2 rounded-lg ml-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </span>
+                        <span class="font-medium text-gray-700 dark:text-gray-200">گزارش کامل مالی</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </a>
+                    <a href="{{ route('admin.reports.exams') }}" class="flex items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                        <span class="bg-blue-100 text-blue-700 p-2 rounded-lg ml-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                        </span>
+                        <span class="font-medium text-gray-700 dark:text-gray-200">گزارش آزمون‌ها و شرکت‌کنندگان</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="p-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 text-center">
-            <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300">@lang('general.See more users')</a>
-        </div>
-    </div>
-</main>
+    </main>
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('assets/js/plugin/chart-js/chart.js') }}"></script>
+    <script src="{{ asset('assets/js/dependencies/app.js') }}"></script>
 
-<script src="{{ asset('assets/js/plugin/chart-js/chart.js') }}"></script>
-<script src="{{ asset('assets/js/dependencies/app.js') }}"></script>
+    <!-- chart -->
+    <script>
+        // Display the current date in Persian format
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('fa-IR');
 
-<!-- chart -->
-<script>
-    // Display the current date in Persian format
-    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('fa-IR');
+        // General settings for Chart.js to support RTL
+        Chart.defaults.font.family = 'payda, sans-serif';
+        Chart.defaults.layout.padding = {
+            right: 20
+        };
 
-    // General settings for Chart.js to support RTL
-    Chart.defaults.font.family = 'payda, sans-serif';
-    Chart.defaults.layout.padding = {
-        right: 20
-    };
-
-    // Create the chart for admin with dual Y-axis
-    const ctx = document.getElementById('salesChart').getContext('2d');
-    const salesChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
-            datasets: [{
-                    label: 'تعداد سفارشات',
-                    data: [125, 142, 112, 108, 165, 189, 210, 225, 198, 175, 160, 210],
-                    backgroundColor: 'rgba(59, 130, 246, 0.7)',
-                    borderColor: 'rgba(59, 130, 246, 1)',
-                    borderWidth: 1,
-                    yAxisID: 'y'
-                },
-                {
-                    label: 'درآمد (میلیون تومان)',
-                    data: [18.5, 21.3, 19.8, 20.1, 25.7, 28.9, 31.2, 33.5, 29.8, 26.5, 24.0, 31.5],
-                    backgroundColor: 'rgba(16, 185, 129, 0.7)',
-                    borderColor: 'rgba(16, 185, 129, 1)',
-                    borderWidth: 1,
-                    yAxisID: 'y1'
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        boxWidth: 12,
-                        padding: 20
+        // Create the chart for admin with dual Y-axis
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی',
+                    'بهمن', 'اسفند'
+                ],
+                datasets: [{
+                        label: 'تعداد سفارشات',
+                        data: [125, 142, 112, 108, 165, 189, 210, 225, 198, 175, 160, 210],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'درآمد (میلیون تومان)',
+                        data: [18.5, 21.3, 19.8, 20.1, 25.7, 28.9, 31.2, 33.5, 29.8, 26.5, 24.0, 31.5],
+                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y1'
                     }
-                },
-                title: {
-                    display: true,
-                    text: 'آمار فروش ماهانه',
-                    font: {
-                        size: 16
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        title: function(context) {
-                            return context[0].label;
-                        },
-                        label: function(context) {
-                            if (context.dataset.label === 'درآمد (میلیون تومان)') {
-                                return 'مبلغ: ' + context.raw.toLocaleString('fa-IR') + ' میلیون تومان';
-                            }
-                            return 'تعداد: ' + context.raw.toLocaleString('fa-IR');
-                        }
-                    }
-                }
+                ]
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 20
+                        }
+                    },
                     title: {
                         display: true,
-                        text: 'تعداد سفارشات'
+                        text: 'آمار فروش ماهانه',
+                        font: {
+                            size: 16
+                        }
                     },
-                    ticks: {
-                        stepSize: 50,
-                        callback: function(value) {
-                            return value.toLocaleString('fa-IR');
+                    tooltip: {
+                        callbacks: {
+                            title: function(context) {
+                                return context[0].label;
+                            },
+                            label: function(context) {
+                                if (context.dataset.label === 'درآمد (میلیون تومان)') {
+                                    return 'مبلغ: ' + context.raw.toLocaleString('fa-IR') + ' میلیون تومان';
+                                }
+                                return 'تعداد: ' + context.raw.toLocaleString('fa-IR');
+                            }
                         }
                     }
                 },
-                y1: {
-                    beginAtZero: true,
-                    position: 'right',
-                    title: {
-                        display: true,
-                        text: 'درآمد (میلیون تومان)'
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'تعداد سفارشات'
+                        },
+                        ticks: {
+                            stepSize: 50,
+                            callback: function(value) {
+                                return value.toLocaleString('fa-IR');
+                            }
+                        }
                     },
-                    grid: {
-                        drawOnChartArea: false
-                    },
-                    ticks: {
-                        callback: function(value) {
-                            return value.toLocaleString('fa-IR');
+                    y1: {
+                        beginAtZero: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'درآمد (میلیون تومان)'
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString('fa-IR');
+                            }
                         }
                     }
                 }
             }
-        }
-    });
-</script>
+        });
+    </script>
 @endpush

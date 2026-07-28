@@ -37,7 +37,7 @@ class AdminReportController extends Controller
     
     public function exams()
     {
-        $exams = Exam::withCount('students')->with('creator')->latest()->paginate(15);
+        $exams = Exam::withCount('students')->with('createdBy')->latest()->paginate(15);
         
         return view('admin.pages.reports.exams', compact('exams'));
     }

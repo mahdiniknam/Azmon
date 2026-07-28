@@ -13,25 +13,18 @@ class AdminDashboardController extends Controller
 {
     public function index(): View
     {
-        // 1. Total Income
-        $totalIncome = Transaction::where('status', true)->sum('amount');
-
-        // 2. Total Users
-        $totalStudents = User::where('role', 'student')->count();
-        $totalTeachers = User::where('role', 'teacher')->count();
-
-        // 3. Total Exams
+        $totalIncome = Transaction::where('status', true)->where('type', 'deposit')->sum('amount');
         $totalExams = Exam::count();
-        
-        // 4. Total Exam Attempts
-        $totalAttempts = ExamAttempt::count();
+        $successfulTransactions = Transaction::where('status', true)->count();
+        $failedTransactions = Transaction::where('status', false)->count();
 
         return view('admin.pages.index', compact(
             'totalIncome',
-            'totalStudents',
-            'totalTeachers',
             'totalExams',
-            'totalAttempts'
+            'successfulTransactions',
+            'failedTransactions'
         ));
+
+      
     }
 }

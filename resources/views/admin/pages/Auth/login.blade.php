@@ -35,7 +35,7 @@
                 </div>
 
                 <h2 class="text-3xl font-bold mb-4">@lang('general.welcome_to_site')</h2>
-                <p class="text-lg mb-6">@lang('general.welcome_desc')</p>
+            
             </div>
         </div>
 
@@ -148,13 +148,13 @@
                             @enderror
                         </div>
 
-                        <div class="flex items-center justify-between">
+                        {{-- <div class="flex items-center justify-between">
                             <div class="text-sm">
                                 <a href="#" class="font-medium text-primary dark:text-primary-dark hover:underline">
                                     @lang('general.forgot_password')
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div>
                             <button type="submit"
