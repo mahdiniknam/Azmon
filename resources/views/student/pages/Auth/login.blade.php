@@ -35,7 +35,7 @@
                 </div>
 
                 <h2 class="text-3xl font-bold mb-4">@lang('general.welcome_to_site')</h2>
-                <p class="text-lg mb-6">@lang('general.welcome_desc')</p>
+                <p class="text-lg mb-6">برای شروع ماجراجویی در دانش وارد شوید</p>
             </div>
         </div>
 
@@ -118,43 +118,6 @@
                             <x-alert type="error" message="{{ $message }}"></x-alert>
                             @enderror
                         </div>
-
-                        {{-- Captcha --}}
-                        {{-- <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                @lang('general.enter_this_number')
-                            </label>
-
-                            <div class="flex items-center gap-3">
-                                <img
-                                    src="{{ $captcha->inline() }}"
-                                    id="captcha-image"
-                                    class="h-12 rounded-lg border cursor-pointer bg-white dark:bg-gray-700"
-                                    alt="@lang('general.captcha_alt')"
-                                    title="@lang('general.captcha_click_to_change')">
-
-                                <input
-                                    type="text"
-                                    name="captcha"
-                                    class="w-full py-3 px-4 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary
-                                        dark:bg-gray-700 dark:border-gray-600 dark:text-white
-                                        @error('captcha') border-red-500 focus:ring-red-500 @enderror"
-                                    placeholder="@lang('general.enter_this_number')"
-                                    required>
-                            </div>
-
-                            @error('captcha')
-                            <x-alert type="error" message="{{ $message }}"></x-alert>
-                            @enderror
-                        </div> --}}
-
-                        {{-- <div class="flex items-center justify-between">
-                            <div class="text-sm">
-                                <a href="#" class="font-medium text-primary dark:text-primary-dark hover:underline">
-                                    @lang('general.forgot_password')
-                                </a>
-                            </div>
-                        </div> --}}
 
                         <div>
                             <button type="submit"

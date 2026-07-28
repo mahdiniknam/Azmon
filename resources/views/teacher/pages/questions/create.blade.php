@@ -24,7 +24,25 @@
                 </button>
             </div>
         </div>
-
+        <form action="{{ route('teacher.questions.import') }}" method="POST" enctype="multipart/form-data"
+            class="flex items-end gap-4 bg-blue-50 p-4 rounded-lg">
+            @csrf
+            <div>
+                <label class="block text-sm mb-1">انتخاب درس:</label>
+                <select name="subject_id" class="rounded-lg border-gray-300 text-sm">
+                    @foreach ($subjects as $subject)
+                        <option value="{{ $subject->id }}">{{ $subject->title }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm mb-1">فایل اکسل سوالات:</label>
+                <input type="file" name="excel_file" class="text-sm">
+            </div>
+            <button type="submit" class="bg-blue-600 text-black px-4 py-2 rounded-lg hover:bg-blue-700">
+                بارگذاری انبوه سوالات
+            </button>
+        </form>
         <!-- Add user form -->
         <form action="{{ route('teacher.questions.store') }}" method="POST"
             class="bg-white py-6 space-y-4 dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 overflow-hidden border border-gray-200 dark:border-gray-700">

@@ -10,7 +10,7 @@ class TeacherQuestionController extends Controller
 {
     public function index()
     {
-        $questions = Question::with('subject')->where('created_by_type', User::class)->where('created_by_id', auth()->id())->paginate(10);
+        $questions = Question::with('subject')->paginate(10);
         return view('teacher.pages.questions.index', compact('questions'));
     }
 

@@ -35,7 +35,7 @@
                 </div>
 
                 <h2 class="text-3xl font-bold mb-4">@lang('general.welcome_to_site')</h2>
-                <p class="text-lg mb-6">@lang('general.welcome_desc')</p>
+                <p class="text-lg mb-6">برای شروع ماجراجویی در دانش وارد شوید</p>
             </div>
         </div>
 
@@ -109,7 +109,7 @@
                             @enderror
                         </div>
 
-                        <div class="flex items-center justify-between">
+                        {{-- <div class="flex items-center justify-between">
                             <div class="flex items-center">
                                 <input id="remember" name="remember" type="checkbox"
                                     class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
@@ -123,7 +123,7 @@
                                     ثبت نام نکرده‌اید؟
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div>
                             <button type="submit"

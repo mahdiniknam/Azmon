@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\BaleBot\BaleConnectionController;
 use App\Http\Controllers\BaleBot\BaleWebhookController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Student\StudentExamController;
 use App\Http\Controllers\Student\Auth\StudentAuthController;
 use App\Http\Controllers\Student\SettingBotController;
@@ -30,6 +31,7 @@ Route::get('/login', function () {
     return redirect()->route('admin.login');
 })->name('login');
 
+Route::get('/',[HomeController::class,'home']);
 Route::middleware(SetLocal::class)->group(function () {
 
     // 🔵 پنل ادمین
@@ -54,11 +56,11 @@ Route::middleware(SetLocal::class)->group(function () {
             // داشبورد
             Route::get('/dashboard', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('dashboard');
 
-            // روت ریشه به داشبورد ریدایرکت شود
-            Route::get('/', function () {
-                return redirect()->route('admin.dashboard');
-            });
+            Route::post('/questions/import', [QuestionController::class, 'import'])
+                ->name('questions.import');
 
+            Route::get('/questions/export', [QuestionController::class, 'export'])
+                ->name('questions.export');
             // منابع
             Route::resource('users', UserController::class)->names('users');
             Route::resource('admins', AdminController::class)->names('admins');
@@ -269,14 +271,13 @@ Route::prefix('student')->name('student.')->group(function (): void {
         Route::get('payments/wallet', [\App\Http\Controllers\Student\StudentPaymentController::class, 'wallet'])->name('payments.wallet');
         Route::post('payments/wallet/charge', [\App\Http\Controllers\Student\StudentPaymentController::class, 'charge'])->name('payments.wallet.charge');
 
-        Route::get('show-seeting-bot',[SettingBotController::class,'show'])->name('show.setting.bot');
+        Route::get('show-seeting-bot', [SettingBotController::class, 'show'])->name('show.setting.bot');
 
         // ایجاد کد جدید
         Route::post('/profile/bale/connect', [BaleConnectionController::class, 'create'])->name('profile.bale.connect');
 
         // قطع اتصال
         Route::delete('/profile/bale/disconnect', [BaleConnectionController::class, 'disconnect'])->name('profile.bale.disconnect');
-
     });
 });
 
@@ -320,6 +321,12 @@ Route::prefix('teacher')->name('teacher.')->group(function (): void {
             Route::get('edit/{id}', [\App\Http\Controllers\Teacher\TeacherQuestionController::class, 'edit'])->name('edit');
             Route::post('update/{id}', [\App\Http\Controllers\Teacher\TeacherQuestionController::class, 'update'])->name('update');
             Route::delete('destroy/{id}', [\App\Http\Controllers\Teacher\TeacherQuestionController::class, 'destroy'])->name('destroy');
+
+            Route::post('/questions/import', [QuestionController::class, 'import'])
+                ->name('import');
+
+            Route::get('/questions/export', [QuestionController::class, 'export'])
+                ->name('export');
         });
 
         // آزمون‌ها

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\QuestionsExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreQuestionRequest;
 use App\Http\Requests\Admin\UpdateQuestionRequest;
@@ -9,6 +10,8 @@ use App\Models\Question;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Imports\QuestionsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class QuestionController extends Controller
 {
@@ -134,5 +137,29 @@ class QuestionController extends Controller
         return redirect()
             ->route('admin.questions.index')
             ->with('success', 'سوال با موفقیت حذف شد.');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'subject_id' => 'required|exists:subjects,id',
+            'excel_file' => 'required|mimes:xlsx,xls,csv|max:2048',
+        ]);
+
+        try {
+            Excel::import(
+                new QuestionsImport($request->subject_id, auth()->user()),
+                $request->file('excel_file')
+            );
+
+            return back()->with('success', 'فایل با موفقیت بارگذاری و سوالات اضافه شدند.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'خطا در فرآیند بارگذاری: ' . $e->getMessage());
+        }
+    }
+
+    public function export()
+    {
+        return Excel::download(new QuestionsExport, 'questions.xlsx');
     }
 }

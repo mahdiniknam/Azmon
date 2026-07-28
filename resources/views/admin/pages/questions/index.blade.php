@@ -1,107 +1,127 @@
 @extends('admin.layout.master')
 
 @section('admin-title')
-لیست سوال ها
+    لیست سوال ها
 @endsection
 
 @section('admin-content')
-<main class="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-900">
-    <!-- header page -->
-    <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">مدیریت سوال ها</h2>
-            <p class="text-gray-600 dark:text-gray-400">لیست تمامی سوال ها</p>
-        </div>
-        <div class="mt-4 md:mt-0">
-            <a href="{{ route('admin.questions.create') }}" class="flex items-center px-4 py-2 text-sm font-medium rounded-lg bg-primary-600 text-white hover:bg-primary-500 shadow-sm dark:bg-primary-500 dark:hover:bg-primary-600">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 me-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                </svg>
-                افزودن سوال جدید
-            </a>
-        </div>
-    </div>
-    {{-- @include('admin.pages.filter',['filters' => $filters,'back'=>route('admin.users.index')]) --}}
-    <!-- Users list -->
-    <div class="bg-white py-6 space-y-4 dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 overflow-hidden border border-gray-200 dark:border-gray-700">
-        <div class="px-6 pb-2 border-b border-gray-200 flex-wrap dark:border-gray-700 flex items-center justify-between">
-            <h3 class="font-bold text-lg mb-4 relative pb-4 before:absolute before:start-0 before:bottom-0 before:size-2 before:rounded-full before:bg-primary after:absolute after:w-40 after:h-2 after:bottom-0 after:start-4 after:bg-primary after:rounded-lg">
-                لیست سوالات
-            </h3>
-        </div>
-        @if(session('success'))
-        <x-alert type="success" message="{{ session('success') }}"></x-alert>
-        @elseif (session('error'))
-        <x-alert type="error" message="{{ session('error') }}"></x-alert>
-        @endif
-        <!-- Users table -->
-        <div class="overflow-x-auto">
-            <table class="w-full text-start">
-                <thead class="bg-gray-50 dark:bg-gray-700">
-                    <tr>
-                        <th class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">شناسه سوال</th>
-                        <th class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">نام درس</th>
-                        <th class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">توضیحات</th>
-                        <th class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">درجه سختی</th>
-                        <th class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">@lang('general.operations')</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                    <!-- Users -->
-                    @foreach ($questions as $qu)
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ $qu->id }}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="ms-4">
-                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $qu->subject->title }}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="ms-4">
-                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ Str::limit($qu->question_text,10,'...') }}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $qu->difficulty_label }}</td>
-                      
-                        
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <div class="flex items-center gap-4">
-                                {{-- Edit --}}
-                                <a href="{{ route('admin.questions.edit', $qu->id) }}"
-                                    class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                    </svg>
-                                </a>
+    <main class="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-900">
+        <!-- header page -->
+        <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">مدیریت سوال ها</h2>
+                <p class="text-gray-600 dark:text-gray-400">لیست تمامی سوال ها</p>
+            </div>
+            <div class="mt-4 md:mt-0">
+                <a href="{{ route('admin.questions.create') }}"
+                    class="flex items-center px-4 py-2 text-sm font-medium rounded-lg bg-primary-600 text-white hover:bg-primary-500 shadow-sm dark:bg-primary-500 dark:hover:bg-primary-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 me-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    افزودن سوال جدید
+                </a>
 
-                                {{-- Delete --}}
-                                <form action="{{ route('admin.questions.destroy', $qu->id) }}"
-                                    method="POST"
-                                    onsubmit="return confirm('آیا مطمئن هستید؟')">
-                                    @csrf
-                                    @method('DELETE')
+                <a href="{{ route('admin.questions.export') }}"
+                    class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mt-3">
+                    خروجی اکسل سوالات
+                </a>
+            </div>
+        </div>
+       
+        <!-- Users list -->
+        <div
+            class="bg-white py-6 space-y-4 dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-700 overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div
+                class="px-6 pb-2 border-b border-gray-200 flex-wrap dark:border-gray-700 flex items-center justify-between">
+                <h3
+                    class="font-bold text-lg mb-4 relative pb-4 before:absolute before:start-0 before:bottom-0 before:size-2 before:rounded-full before:bg-primary after:absolute after:w-40 after:h-2 after:bottom-0 after:start-4 after:bg-primary after:rounded-lg">
+                    لیست سوالات
+                </h3>
+            </div>
 
-                                    <button type="submit"
-                                        class="text-secondary-600 hover:text-secondary-900 dark:text-secondary-50 dark:hover:text-secondary-100">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                        </svg>
-                                    </button>
-                                </form>
-                            </td>
-                            </div>
+            <!-- Users table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-start">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th
+                                class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                شناسه سوال</th>
+                            <th
+                                class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                نام درس</th>
+                            <th
+                                class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                توضیحات</th>
+                            <th
+                                class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                درجه سختی</th>
+                            <th
+                                class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                @lang('general.operations')</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                        <!-- Users -->
+                        @foreach ($questions as $qu)
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                                    {{ $qu->id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="ms-4">
+                                            <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                                {{ $qu->subject->title }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="ms-4">
+                                            <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                                {{ Str::limit($qu->question_text, 10, '...') }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                    {{ $qu->difficulty_label }}</td>
 
-                    </tr>
-                    @endforeach
-                </tbody>
+
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex items-center gap-4">
+                                        {{-- Edit --}}
+                                        <a href="{{ route('admin.questions.edit', $qu->id) }}"
+                                            class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                            </svg>
+                                        </a>
+
+                                        {{-- Delete --}}
+                                        <form action="{{ route('admin.questions.destroy', $qu->id) }}" method="POST"
+                                            onsubmit="return confirm('آیا مطمئن هستید؟')">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit"
+                                                class="text-secondary-600 hover:text-secondary-900 dark:text-secondary-50 dark:hover:text-secondary-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                </td>
+            </div>
+
+            </tr>
+            @endforeach
+            </tbody>
             </table>
         </div>
 
@@ -127,49 +147,51 @@
 
                     {{-- Previous --}}
                     @if ($questions->onFirstPage())
-                    <span class="px-3 py-1 border rounded-lg text-sm text-gray-400 border-gray-300 dark:border-gray-600">
-                        @lang('general.previous')
-                    </span>
+                        <span
+                            class="px-3 py-1 border rounded-lg text-sm text-gray-400 border-gray-300 dark:border-gray-600">
+                            @lang('general.previous')
+                        </span>
                     @else
-                    <a href="{{ $questions->previousPageUrl() }}"
-                        class="px-3 py-1 border rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600">
-                        @lang('general.previous')
-                    </a>
+                        <a href="{{ $questions->previousPageUrl() }}"
+                            class="px-3 py-1 border rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600">
+                            @lang('general.previous')
+                        </a>
                     @endif
 
                     {{-- Pages --}}
                     @foreach ($questions->getUrlRange(1, $questions->lastPage()) as $page => $url)
-                    @if ($page == $questions->currentPage())
-                    <span
-                        class="px-3 py-1 border rounded-lg text-sm font-medium text-white bg-primary-600 dark:bg-primary-500 border-primary-600 dark:border-primary-500">
-                        {{ $page }}
-                    </span>
-                    @else
-                    <a href="{{ $url }}"
-                        class="px-3 py-1 border rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600">
-                        {{ $page }}
-                    </a>
-                    @endif
+                        @if ($page == $questions->currentPage())
+                            <span
+                                class="px-3 py-1 border rounded-lg text-sm font-medium text-white bg-primary-600 dark:bg-primary-500 border-primary-600 dark:border-primary-500">
+                                {{ $page }}
+                            </span>
+                        @else
+                            <a href="{{ $url }}"
+                                class="px-3 py-1 border rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600">
+                                {{ $page }}
+                            </a>
+                        @endif
                     @endforeach
 
                     {{-- Next --}}
                     @if ($questions->hasMorePages())
-                    <a href="{{ $questions->nextPageUrl() }}"
-                        class="px-3 py-1 border rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600">
-                        @lang('general.next')
-                    </a>
+                        <a href="{{ $questions->nextPageUrl() }}"
+                            class="px-3 py-1 border rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600">
+                            @lang('general.next')
+                        </a>
                     @else
-                    <span class="px-3 py-1 border rounded-lg text-sm text-gray-400 border-gray-300 dark:border-gray-600">
-                        @lang('general.next')
-                    </span>
+                        <span
+                            class="px-3 py-1 border rounded-lg text-sm text-gray-400 border-gray-300 dark:border-gray-600">
+                            @lang('general.next')
+                        </span>
                     @endif
                 </div>
             </div>
         </div>
-    </div>
-</main>
+        </div>
+    </main>
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/js/dependencies/app.js') }}"></script>
+    <script src="{{ asset('assets/js/dependencies/app.js') }}"></script>
 @endpush
